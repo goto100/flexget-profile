@@ -2,3 +2,4 @@ flexget.log*
 test-config.sqlite
 db-config.sqlite
 .config-lock
+secretfile.yml
