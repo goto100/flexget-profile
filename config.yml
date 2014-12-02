@@ -1,0 +1,69 @@
+secrets: secretfile.yml
+
+templates:
+  movies-global:
+    imdb_lookup: yes
+    seen_movies: strict
+    inputs:
+      - rss: "{{secrets.pt.hdwing}}"
+      - rss: "{{secrets.pt.hdsky}}"
+
+tasks:
+  series:
+    priority: 100
+    inputs:
+      - rss: "{{secrets.pt.hdwing}}"
+      - rss: "{{secrets.pt.hdsky}}"
+    exists_series: "{{secrets.path.tv}}"
+    thetvdb_lookup: yes
+    all_series: yes
+    set:
+      path: "{{secrets.path.tv}}"
+    transmission: yes
+
+  documentary:
+    priority: 101
+    inputs:
+      - rss: "{{secrets.pt.hdwing}}"
+      - rss: "{{secrets.pt.hdsky}}"
+    exists_series: "{{secrets.path.documentary}}"
+    imdb_lookup: yes
+    if:
+      - "'documentary' in imdb_genres": accept
+    set:
+      path: "{{secrets.path.documentary}}"
+    transmission: yes
+
+  x_movies:
+    priority: 102
+    template: movies-global
+    exists_movie: "{{secrets.path.x_movies}}"
+    imdb_required: yes
+    imdb:
+      accept_mpaa_ratings:
+        - PG_13
+        - R
+        - X
+      reject_mpaa_ratings:
+        - NONE
+        - PG
+        - G
+        - TV_Y
+    set:
+      path: "{{secrets.path.x_movies}}"
+    transmission: yes
+
+  movies:
+    priority: 103
+    template: movies-global
+    exists_movie: "{{secrets.path.movies}}"
+    imdb_required: yes
+    accept_all: yes
+    set:
+      path: "{{secrets.path.movies}}"
+    transmission: yes
+
+schedules:
+  - tasks: [documentary, series, x_movies, movies]
+    interval:
+      minutes: 2
