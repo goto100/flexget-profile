@@ -39,16 +39,8 @@ tasks:
     template: movies-global
     exists_movie: "{{secrets.path.x_movies}}"
     imdb_required: yes
-    imdb:
-      accept_mpaa_ratings:
-        - PG_13
-        - R
-        - X
-      reject_mpaa_ratings:
-        - NONE
-        - PG
-        - G
-        - TV_Y
+    if:
+      - "'female nudity' in imdb_plot_keywords": accept
     set:
       path: "{{secrets.path.x_movies}}"
     transmission: yes
