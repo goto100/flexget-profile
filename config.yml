@@ -61,4 +61,4 @@ tasks:
 schedules:
   - tasks: [documentary, series, x_movies, movies]
     interval:
-      minutes: 2
+      minutes: 5
