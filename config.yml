@@ -32,7 +32,7 @@ tasks:
     exists_series: "{{secrets.path.documentary}}"
     imdb_lookup: yes
     if:
-      - "'documentary' in imdb_genres": accept
+      - "imdb_genres and 'documentary' in imdb_genres": accept
     set:
       path: "{{secrets.path.documentary}}"
     transmission: yes
@@ -56,7 +56,18 @@ tasks:
       path: "{{secrets.path.movies}}"
     transmission: yes
 
+  others:
+    priority: 200
+    inputs:
+      - rss: "{{secrets.pt.hdwing}}"
+      - rss: "{{secrets.pt.hdsky}}"
+      - rss: "{{secrets.pt.hdcn}}"
+    accept_all: yes
+    set:
+      path: "{{secrets.path.others}}"
+    transmission: yes
+
 schedules:
-  - tasks: [documentary, series, x_movies, movies]
+  - tasks: [documentary, series, x_movies, movies, others]
     interval:
       minutes: 5
