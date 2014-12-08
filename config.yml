@@ -41,7 +41,6 @@ tasks:
     priority: 102
     template: movies-global
     exists_movie: "{{secrets.path.x_movies}}"
-    imdb_required: yes
     if:
       - "'female nudity' in imdb_plot_keywords": accept
     set:
@@ -52,7 +51,6 @@ tasks:
     priority: 103
     template: movies-global
     exists_movie: "{{secrets.path.movies}}"
-    imdb_required: yes
     accept_all: yes
     set:
       path: "{{secrets.path.movies}}"
